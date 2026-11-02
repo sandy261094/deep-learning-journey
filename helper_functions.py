@@ -286,3 +286,42 @@ def calculate_results(y_true, y_pred):
                   "recall": model_recall,
                   "f1": model_f1}
   return model_results
+
+
+# Let's create a function to compare training histories
+def compare_histories(original_history, new_history, initial_epochs=5):
+  '''
+
+  Compares two tensorflow history's
+  '''
+  # Get original history measurements
+  acc = original_history.history["accuracy"]
+  loss =original_history.history["loss"]
+
+  val_acc = original_history.history["val_accuracy"]
+  val_loss = original_history.history["val_loss"]
+
+  # Combine original history
+  total_acc = acc + new_history.history["accuracy"]
+  total_loss = loss + new_history.history["loss"]
+
+  total_val_acc = val_acc + new_history.history["val_accuracy"]
+  total_val_loss = val_loss + new_history.history["val_loss"]
+
+  # Make plots for accuracy
+  plt.figure(figsize=(10,8))
+  plt.subplot(2,1,1)
+  plt.plot(total_acc , label = "Training_Accuracy")
+  plt.plot(total_val_acc , label = "Val_Accuracy")
+  plt.plot([initial_epochs-1, initial_epochs-1], plt.ylim(), label="Start_fine_tuning")
+  plt.legend(loc="lower right")
+  plt.title("Training and Validation Accuracy")
+
+  # Make plots for loss
+  plt.figure(figsize=(10,8))
+  plt.subplot(2,1,1)
+  plt.plot(total_loss , label = "Training_Loss")
+  plt.plot(total_val_loss , label = "Val_Loss")
+  plt.plot([initial_epochs-1, initial_epochs-1], plt.ylim(), label="Start_fine_tuning")
+  plt.legend(loc="upper right")
+  plt.title("Training and Validation Loss")

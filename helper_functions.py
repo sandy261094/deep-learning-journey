@@ -326,40 +326,6 @@ def compare_histories(original_history, new_history, initial_epochs=5):
   plt.legend(loc="upper right")
   plt.title("Training and Validation Loss")
 
-# Make preds on random number of test images
-import os
-import random
-
-plt.figure(figsize=(20, 8))
-for i in range(3):
-  class_name = random.choice(class_names)
-  filename = random.choice(os.listdir(test_dir + "/" + class_name))
-  filepath = test_dir + class_name + "/" + filename
-  # print(filepath)
-
-
-  # Load the image and make prediction
-  img = load_and_prep_image(filepath, scale=False)
-  pred_prob = loaded_model.predict(tf.expand_dims(img,axis=0))
-  pred_class = class_names[pred_prob.argmax()]
-  # print(pred_prob)
-  # print(pred_class)
-
-
-  # Plot the images
-  plt.subplot(1, 3, i+1)
-  plt.imshow(img/255.)
-  if class_name == pred_class:
-    title_color = "g"
-  else:
-    title_color="r"
-  plt.title(f"actual: {class_name}, pred: {pred_class}, prob: {pred_prob.max():.2f}", c=title_color)
-  plt.axis(False)
-
-  # Save the figure to the current working directory
-  if savefig:
-    fig.savefig("confusion_matrix.png")
-
 # Create checkpoint callback
 checkpoint_path = "10_percent_all_classes_data_model_checkpoint.weights.h5"
 

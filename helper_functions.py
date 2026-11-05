@@ -433,3 +433,13 @@ def make_confusion_matrix_101_classes(y_true, y_pred, classes=None, figsize=(10,
   # Save the figure to the current working directory
   if savefig:
     fig.savefig("confusion_matrix.png")
+
+# Create checkpoint callback
+checkpoint_path = "10_percent_all_classes_data_model_checkpoint.weights.h5"
+
+# Create checkpoint callback that saves the model's weights only
+checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(checkpoint_path,
+                                                         save_weights_only=True,
+                                                         save_best_only=True,
+                                                         monitor="val_accuracy",
+                                                         verbose=1)
